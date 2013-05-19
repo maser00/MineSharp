@@ -111,6 +111,7 @@ namespace MineSharp.Networking
             LoginResult res = Authenticator.Authenticate(username, host, port);
             if (res == LoginResult.LoggedIn)
             {
+                authenticated = true;
                 //TODO: key exchange
                 this.player = new Player(username);
             }

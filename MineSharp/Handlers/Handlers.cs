@@ -62,6 +62,25 @@ namespace MineSharp.Handlers
             }
             else
             {
+                using (var packet = new PacketWriter(SendOpcode.Login))
+                {
+                    uint entityID = 1; // TODO make dynamic
+                    string levelType = "default";
+                    byte gameMode = 1;
+                    byte dimension = 0;
+                    byte difficulty = 2;
+                    byte maxPlayers = 20;
+
+                    packet.Write(entityID);
+                    packet.WriteString(levelType);
+                    packet.Write(gameMode);
+                    packet.Write(dimension);
+                    packet.Write(difficulty);
+                    // unused byte
+                    packet.Write((byte) 0);
+                    packet.Write(maxPlayers);
+                    client.Send(packet);
+                }
                 //TODO: chunks?
             }
         }

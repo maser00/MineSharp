@@ -23,6 +23,7 @@ namespace MineSharp.Handlers
 {
     public enum SendOpcode : byte
     {
-        Kick = 0xff
+        Kick = 0xff,
+        Login = 0x01
     }
 }
