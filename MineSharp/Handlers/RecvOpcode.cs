@@ -24,6 +24,10 @@ namespace MineSharp.Handlers
     public enum RecvOpcode : byte
     {
         Handshake = 0x02,
-        ServerStats = 0xFE
+        ServerStats = 0xFE,
+        ClientSettings = 0xCC,
+        KeepAlive = 0x00,
+        LoginRequest = 0x01,
+        PlayerPosition = 0x0D
     }
 }

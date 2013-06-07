@@ -27,6 +27,29 @@ namespace MineSharp.Handlers
 {
     class Handlers
     {
+
+        private static async void SendLoginInformation(Client client)
+        {
+            using (var packet = new PacketWriter(SendOpcode.Login))
+            {
+                uint entityID = 1; // TODO make dynamic
+                string levelType = "default";
+                byte gameMode = 1;
+                byte dimension = 0;
+                byte difficulty = 2;
+                byte maxPlayers = Server.MaxPlayers;
+
+                packet.Write(entityID);
+                packet.WriteString(levelType);
+                packet.Write(gameMode);
+                packet.Write(dimension);
+                packet.Write(difficulty);
+                // unused byte
+                packet.Write(new byte());
+                packet.Write(maxPlayers);
+                client.Send(packet);
+            }
+        }
         
         [PacketHandler(RecvOpcode.ServerStats)]
         public static async Task HandleServerStats(Client client, PacketReader reader)
@@ -62,28 +85,63 @@ namespace MineSharp.Handlers
             }
             else
             {
-                using (var packet = new PacketWriter(SendOpcode.Login))
-                {
-                    uint entityID = 1; // TODO make dynamic
-                    string levelType = "default";
-                    byte gameMode = 1;
-                    byte dimension = 0;
-                    byte difficulty = 2;
-                    byte maxPlayers = 20;
-
-                    packet.Write(entityID);
-                    packet.WriteString(levelType);
-                    packet.Write(gameMode);
-                    packet.Write(dimension);
-                    packet.Write(difficulty);
-                    // unused byte
-                    packet.Write((byte) 0);
-                    packet.Write(maxPlayers);
-                    client.Send(packet);
-                }
-                //TODO: chunks?
+                SendLoginInformation(client);
             }
         }
-       
+
+        [PacketHandler(RecvOpcode.ClientSettings)]
+        public static async Task HandleClientSettings(Client client, PacketReader reader)
+        {
+            //TODO: save these settings in Player
+            string locale = await reader.ReadString();
+            byte viewDistance = await reader.ReadByte();
+            byte chatFlags = await reader.ReadByte();
+            byte difficulty = await reader.ReadByte();
+            //TODO: cape settings
+         }
+
+        [PacketHandler(RecvOpcode.KeepAlive)]
+        public static async Task HandleKeepAlive(Client client, PacketReader reader)
+        {
+            // TODO: can this be done faster?
+            uint keepAliveID = await reader.ReadUInt32();
+
+            // send packet with same id, nothing special
+            using (var packet = new PacketWriter(SendOpcode.Login))
+            {
+                packet.Write(keepAliveID);
+                client.Send(packet);
+            }
+        }
+
+        [PacketHandler(RecvOpcode.LoginRequest)]
+        public static async Task HandleLoginRequest(Client client, PacketReader reader)
+        {
+            SendLoginInformation(client);
+        }
+
+        [PacketHandler(RecvOpcode.PlayerPosition)]
+        public static async Task HandlePlayerPosition(Client client, PacketReader reader)
+        {
+            using (var packet = new PacketWriter(SendOpcode.Kick))
+            {
+                double x = 0;
+                double stance = 0;
+                double y = 0;
+                double z = 0;
+                float yaw = 0;
+                float pitch = 0;
+                bool onGround = true;
+
+                packet.Write(x);
+                packet.Write(stance);
+                packet.Write(y);
+                packet.Write(z);
+                packet.Write(yaw);
+                packet.Write(pitch);
+                packet.Write(onGround);
+                client.Send(packet);
+            }
+        }    
     }
 }
