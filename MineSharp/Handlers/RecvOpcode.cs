@@ -28,6 +28,9 @@ namespace MineSharp.Handlers
         ClientSettings = 0xCC,
         KeepAlive = 0x00,
         LoginRequest = 0x01,
-        PlayerPosition = 0x0D
+        PlayerOnGround = 0x0A,
+        PlayerPosition = 0x0B,
+        PlayerLook = 0x0C,
+        PlayerPositionAndLook = 0x0D
     }
 }

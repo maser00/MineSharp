@@ -24,6 +24,8 @@ namespace MineSharp.Handlers
     public enum SendOpcode : byte
     {
         Kick = 0xff,
-        Login = 0x01
+        Login = 0x01,
+        KeepAlive = 0x00,
+        PlayerPosition = 0x0D
     }
 }

@@ -25,15 +25,18 @@ using System.IO;
 using MineSharp.Handlers;
 using MineSharp.Logic;
 using MineSharp.Logic.Authentication;
+using System.Timers;
 
 namespace MineSharp.Networking
 {
-    class Client
+    public class Client
     {
+        private const uint KeepAliveID = 7;
+
         private string Username { get; set; }
         public bool IsConnected { get { return connected; } }
         public bool IsAuthenticated { get { return authenticated; } }
-        public Player Player { get { return player; } } 
+        public Player Player { get { return player; } }
 
         private Socket sock;
         private PacketReader reader;
@@ -42,6 +45,9 @@ namespace MineSharp.Networking
         private bool handling;
         private bool authenticated;
 
+        private DateTime lastPingSend;
+        private Timer timer;
+
         public event EventHandler<EventArgs> OnDisconnect;
 
         public Client(Socket client)
@@ -49,6 +55,10 @@ namespace MineSharp.Networking
             this.sock = client;
             this.reader = new PacketReader(client);
             connected = true;
+
+            timer = new Timer(5000);
+            timer.AutoReset = true;
+            timer.Elapsed += KeepAlive;
         }
 
         public string GetHostName()
@@ -60,6 +70,7 @@ namespace MineSharp.Networking
         {
             if (!handling)
             {
+                handling = true;
                 Task.Factory.StartNew(async () =>
                 {
                     while (connected)
@@ -76,7 +87,7 @@ namespace MineSharp.Networking
                         }
                     }
                 });
-                handling = true;
+                timer.Start();
             }
         }
 
@@ -86,16 +97,17 @@ namespace MineSharp.Networking
             {
                 if (OnDisconnect != null)
                     OnDisconnect(this, EventArgs.Empty);
-
                 connected = false;
+                timer.Stop();
             }
         }
 
         public void Send(PacketWriter packet)
         {
             byte[] data = packet.GetBytes();
+            Console.WriteLine("Sending opcode {0}.", (SendOpcode)data[0]);
             sock.Send(data); //TODO: async send (if possible)
-           // Console.WriteLine("Sent: {0}", BytesToString(data));
+            // Console.WriteLine("Sent: {0}", BytesToString(data));
         }
 
         private static string BytesToString(byte[] data)
@@ -116,6 +128,15 @@ namespace MineSharp.Networking
                 this.player = new Player(username);
             }
             return res;
+        }
+
+        private void KeepAlive(object sender, ElapsedEventArgs e)
+        {
+            using (var packet = new PacketWriter(SendOpcode.KeepAlive))
+            {
+                packet.Write(KeepAliveID);
+                Send(packet);
+            }
         }
     }
 }

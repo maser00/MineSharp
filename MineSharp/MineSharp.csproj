@@ -45,12 +45,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\Handlers.cs" />
+    <Compile Include="Handlers\MovementHandlers.cs" />
     <Compile Include="Handlers\PacketHandlerAttribute.cs" />
     <Compile Include="Handlers\PacketManager.cs" />
     <Compile Include="Handlers\RecvOpcode.cs" />
     <Compile Include="Handlers\SendOpcode.cs" />
     <Compile Include="Logic\Authentication\Authenticator.cs" />
     <Compile Include="Logic\Authentication\LoginResult.cs" />
+    <Compile Include="Logic\Position.cs" />
+    <Compile Include="Logic\View.cs" />
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Networking\PacketReader.cs" />
     <Compile Include="Networking\PacketWriter.cs" />

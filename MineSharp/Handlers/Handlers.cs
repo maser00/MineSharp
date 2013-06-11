@@ -32,7 +32,7 @@ namespace MineSharp.Handlers
         {
             using (var packet = new PacketWriter(SendOpcode.Login))
             {
-                uint entityID = 1; // TODO make dynamic
+                uint entityID = 4432; // TODO make dynamic
                 string levelType = "default";
                 byte gameMode = 1;
                 byte dimension = 0;
@@ -45,19 +45,19 @@ namespace MineSharp.Handlers
                 packet.Write(dimension);
                 packet.Write(difficulty);
                 // unused byte
-                packet.Write(new byte());
+                packet.Write((byte)0);
                 packet.Write(maxPlayers);
                 client.Send(packet);
             }
         }
-        
+
         [PacketHandler(RecvOpcode.ServerStats)]
         public static async Task HandleServerStats(Client client, PacketReader reader)
         {
             await reader.ReadByte();
             using (var packet = new PacketWriter(SendOpcode.Kick))
             {
-                packet.WriteString("§1\0{0}\0{1}\0{2}\0{3}\0{4}", 
+                packet.WriteString("§1\0{0}\0{1}\0{2}\0{3}\0{4}",
                     Server.Protocol, Server.Version, Server.Instance.GetMOTD(),
                     Server.Instance.PlayerCount, Server.Instance.Max);
 
@@ -97,21 +97,14 @@ namespace MineSharp.Handlers
             byte viewDistance = await reader.ReadByte();
             byte chatFlags = await reader.ReadByte();
             byte difficulty = await reader.ReadByte();
-            //TODO: cape settings
+            bool cape = await reader.ReadBoolean();
          }
-
+        
         [PacketHandler(RecvOpcode.KeepAlive)]
         public static async Task HandleKeepAlive(Client client, PacketReader reader)
         {
-            // TODO: can this be done faster?
-            uint keepAliveID = await reader.ReadUInt32();
-
-            // send packet with same id, nothing special
-            using (var packet = new PacketWriter(SendOpcode.Login))
-            {
-                packet.Write(keepAliveID);
-                client.Send(packet);
-            }
+            // we don't need the id
+            await reader.SkipBytes(4);
         }
 
         [PacketHandler(RecvOpcode.LoginRequest)]
@@ -119,29 +112,5 @@ namespace MineSharp.Handlers
         {
             SendLoginInformation(client);
         }
-
-        [PacketHandler(RecvOpcode.PlayerPosition)]
-        public static async Task HandlePlayerPosition(Client client, PacketReader reader)
-        {
-            using (var packet = new PacketWriter(SendOpcode.Kick))
-            {
-                double x = 0;
-                double stance = 0;
-                double y = 0;
-                double z = 0;
-                float yaw = 0;
-                float pitch = 0;
-                bool onGround = true;
-
-                packet.Write(x);
-                packet.Write(stance);
-                packet.Write(y);
-                packet.Write(z);
-                packet.Write(yaw);
-                packet.Write(pitch);
-                packet.Write(onGround);
-                client.Send(packet);
-            }
-        }    
     }
 }
