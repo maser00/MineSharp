@@ -61,7 +61,6 @@ namespace MineSharp.Handlers
                     Server.Protocol, Server.Version, Server.Instance.GetMOTD(),
                     Server.Instance.PlayerCount, Server.Instance.Max);
 
-                byte[] data = packet.GetBytes();
                 client.Send(packet);
             }
         }
@@ -74,6 +73,7 @@ namespace MineSharp.Handlers
             string host = await reader.ReadString();
             uint port = await reader.ReadUInt32();
 
+            // TODO: This has to happen as a seperate task!! not on this thread
             LoginResult res = client.Authenticate(username, host, port);
             if (res != LoginResult.LoggedIn)
             {
