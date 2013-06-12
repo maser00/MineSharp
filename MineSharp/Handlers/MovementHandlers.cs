@@ -90,10 +90,11 @@ namespace MineSharp.Handlers
                 packet.Write(player.Position.X);
                 packet.Write(player.Position.Y);
                 packet.Write(player.Stance);
-                packet.Write(player.Position.Y);
+                packet.Write(player.Position.Z);
                 packet.Write(player.View.yaw);
                 packet.Write(player.View.pitch);
                 packet.Write(player.OnGround);
+                //Console.WriteLine("Pos: X={0}, Y={1}, Z={2}", player.Position.X, player.Position.Y, player.Position.Z);
                 client.Send(packet);
             }
         }

@@ -26,6 +26,8 @@ namespace MineSharp.Handlers
         Kick = 0xff,
         Login = 0x01,
         KeepAlive = 0x00,
-        PlayerPosition = 0x0D
+        PlayerPosition = 0x0D,
+        ChunkData = 0x33,
+        SpawnPosition = 0x06
     }
 }

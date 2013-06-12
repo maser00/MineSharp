@@ -22,6 +22,8 @@ using System.Threading.Tasks;
 
 using MineSharp.Networking;
 using MineSharp.Logic.Authentication;
+using MineSharp.Logic.Chunks;
+using MineSharp.Logic;
 
 namespace MineSharp.Handlers
 {
@@ -98,8 +100,8 @@ namespace MineSharp.Handlers
             byte chatFlags = await reader.ReadByte();
             byte difficulty = await reader.ReadByte();
             bool cape = await reader.ReadBoolean();
-         }
-        
+        }
+
         [PacketHandler(RecvOpcode.KeepAlive)]
         public static async Task HandleKeepAlive(Client client, PacketReader reader)
         {
@@ -111,6 +113,27 @@ namespace MineSharp.Handlers
         public static async Task HandleLoginRequest(Client client, PacketReader reader)
         {
             SendLoginInformation(client);
+
+            using (var packet = new PacketWriter(SendOpcode.SpawnPosition))
+            {
+                packet.Write(200);
+                packet.Write(200);
+                packet.Write(200);
+                client.Send(packet);
+            }
+
+            using (var packet = new PacketWriter(SendOpcode.ChunkData))
+            {
+                ChunkPacket chunkPakket = ChuckLoader.ChunkToPacket();
+                packet.Write(chunkPakket.X);
+                packet.Write(chunkPakket.Z);
+                packet.Write(chunkPakket.GroundUp);
+                packet.Write(chunkPakket.PrimaryBitMap);
+                packet.Write(chunkPakket.AddBitMap);
+                packet.Write(chunkPakket.CompressedData.Length);
+                packet.Write(chunkPakket.CompressedData);
+                client.Send(packet);
+            }
         }
     }
 }

@@ -35,6 +35,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zlib">
+      <HintPath>..\..\..\..\Desktop\Ionic.Zlib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,13 +55,15 @@
     <Compile Include="Handlers\SendOpcode.cs" />
     <Compile Include="Logic\Authentication\Authenticator.cs" />
     <Compile Include="Logic\Authentication\LoginResult.cs" />
-    <Compile Include="Logic\Position.cs" />
-    <Compile Include="Logic\View.cs" />
+    <Compile Include="Logic\Chunks\ChunkLoader.cs" />
+    <Compile Include="Logic\Chunks\ChunkPacket.cs" />
+    <Compile Include="Logic\Player\Position.cs" />
+    <Compile Include="Logic\Player\View.cs" />
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Networking\PacketReader.cs" />
     <Compile Include="Networking\PacketWriter.cs" />
     <Compile Include="Networking\Server.cs" />
-    <Compile Include="Logic\Player.cs" />
+    <Compile Include="Logic\Player\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Reflector.cs" />
