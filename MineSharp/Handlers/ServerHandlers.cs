@@ -1,6 +1,7 @@
 ﻿/*
  * This file is part of MineSharp. Copyright 2013 Cedric Van Goethem 
- * 
+ * and Aaron Mousavi
+ *  
  * MineSharp. is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -27,14 +28,13 @@ using MineSharp.Logic;
 
 namespace MineSharp.Handlers
 {
-    class Handlers
+    class ServerHandlers
     {
-
         private static async void SendLoginInformation(Client client)
         {
             using (var packet = new PacketWriter(SendOpcode.Login))
             {
-                uint entityID = 4432; // TODO make dynamic
+                uint entityID = 4432; // TODO: make dynamic
                 string levelType = "default";
                 byte gameMode = 1;
                 byte dimension = 0;
@@ -51,6 +51,8 @@ namespace MineSharp.Handlers
                 packet.Write(maxPlayers);
                 client.Send(packet);
             }
+
+            WorldHandler.TestSpawn(client);
         }
 
         [PacketHandler(RecvOpcode.ServerStats)]
@@ -91,17 +93,6 @@ namespace MineSharp.Handlers
             }
         }
 
-        [PacketHandler(RecvOpcode.ClientSettings)]
-        public static async Task HandleClientSettings(Client client, PacketReader reader)
-        {
-            //TODO: save these settings in Player
-            string locale = await reader.ReadString();
-            byte viewDistance = await reader.ReadByte();
-            byte chatFlags = await reader.ReadByte();
-            byte difficulty = await reader.ReadByte();
-            bool cape = await reader.ReadBoolean();
-        }
-
         [PacketHandler(RecvOpcode.KeepAlive)]
         public static async Task HandleKeepAlive(Client client, PacketReader reader)
         {
@@ -113,27 +104,6 @@ namespace MineSharp.Handlers
         public static async Task HandleLoginRequest(Client client, PacketReader reader)
         {
             SendLoginInformation(client);
-
-            using (var packet = new PacketWriter(SendOpcode.SpawnPosition))
-            {
-                packet.Write(200);
-                packet.Write(200);
-                packet.Write(200);
-                client.Send(packet);
-            }
-
-            using (var packet = new PacketWriter(SendOpcode.ChunkData))
-            {
-                ChunkPacket chunkPakket = ChuckLoader.ChunkToPacket();
-                packet.Write(chunkPakket.X);
-                packet.Write(chunkPakket.Z);
-                packet.Write(chunkPakket.GroundUp);
-                packet.Write(chunkPakket.PrimaryBitMap);
-                packet.Write(chunkPakket.AddBitMap);
-                packet.Write(chunkPakket.CompressedData.Length);
-                packet.Write(chunkPakket.CompressedData);
-                client.Send(packet);
-            }
         }
     }
 }

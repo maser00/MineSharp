@@ -1,6 +1,7 @@
 ﻿/*
  * This file is part of MineSharp. Copyright 2013 Cedric Van Goethem 
- * 
+ * and Aaron Mousavi
+ *  
  * MineSharp. is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -46,6 +47,7 @@ namespace MineSharp.Handlers
         {
             bool ground = await reader.ReadBoolean();
             client.Player.OnGround = ground;
+            //Console.WriteLine("Faling is {0}", ground);
         }
 
         private static async Task SetView(Client client, PacketReader reader)
@@ -84,9 +86,7 @@ namespace MineSharp.Handlers
             await SetOnGround(client, reader);
             using (var packet = new PacketWriter(SendOpcode.PlayerPosition))
             {
-
                 Player player = client.Player;
-
                 packet.Write(player.Position.X);
                 packet.Write(player.Position.Y);
                 packet.Write(player.Stance);
@@ -98,5 +98,11 @@ namespace MineSharp.Handlers
                 client.Send(packet);
             }
         }
+
+        //[PacketHandler(RecvOpcode.PlayerAbility)]
+        //public static async Task HandlePlayerAbility(Client client, PacketReader reader)
+        //{
+        //    await reader.SkipBytes(3);
+        //}
     }
 }

@@ -1,6 +1,7 @@
 ﻿/*
  * This file is part of MineSharp. Copyright 2013 Cedric Van Goethem 
- * 
+ * and Aaron Mousavi
+ *  
  * MineSharp. is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -28,6 +29,6 @@ namespace MineSharp.Handlers
         KeepAlive = 0x00,
         PlayerPosition = 0x0D,
         ChunkData = 0x33,
-        SpawnPosition = 0x06
+        SetCompas = 0x06
     }
 }

@@ -12,6 +12,21 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,8 +50,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zlib">
-      <HintPath>..\..\..\..\Desktop\Ionic.Zlib.dll</HintPath>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\..\..\Desktop\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,16 +62,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\Handlers.cs" />
+    <Compile Include="Handlers\ClientHandlers.cs" />
+    <Compile Include="Handlers\ServerHandlers.cs" />
     <Compile Include="Handlers\MovementHandlers.cs" />
     <Compile Include="Handlers\PacketHandlerAttribute.cs" />
     <Compile Include="Handlers\PacketManager.cs" />
     <Compile Include="Handlers\RecvOpcode.cs" />
     <Compile Include="Handlers\SendOpcode.cs" />
+    <Compile Include="Handlers\WorldHandler.cs" />
     <Compile Include="Logic\Authentication\Authenticator.cs" />
     <Compile Include="Logic\Authentication\LoginResult.cs" />
-    <Compile Include="Logic\Chunks\ChunkLoader.cs" />
-    <Compile Include="Logic\Chunks\ChunkPacket.cs" />
+    <Compile Include="Logic\Chunks\ChunkTest.cs" />
+    <Compile Include="Logic\Chunks\Chunk.cs" />
     <Compile Include="Logic\Player\Position.cs" />
     <Compile Include="Logic\Player\View.cs" />
     <Compile Include="Networking\Client.cs" />
@@ -71,7 +88,23 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

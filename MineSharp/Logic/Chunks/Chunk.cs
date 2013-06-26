@@ -19,20 +19,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace MineSharp.Handlers
+namespace MineSharp.Logic.Chunks
 {
-    public enum RecvOpcode : byte
+    class Chunk
     {
-        Handshake = 0x02,
-        ServerStats = 0xFE,
-        ClientSettings = 0xCC,
-        KeepAlive = 0x00,
-        LoginRequest = 0x01,
-        PlayerOnGround = 0x0A,
-        PlayerPosition = 0x0B,
-        PlayerLook = 0x0C,
-        PlayerPositionAndLook = 0x0D,
-        PlayerAbility = 0xCA
+
+        public int X { get; private set; }
+        public int Z { get; private set; }
+        public bool GroundUp { get; private set; }
+        public ushort PrimaryBitMap { get; private set; }
+        public ushort AddBitMap { get; private set; }
+        public byte[] CompressedData { get; private set; }
+
+        public Chunk(int X, int Z, bool GroundUp, ushort PrimaryBitMap, ushort AddBitMap, byte[] CompressedData)
+        {
+            this.X = X;
+            this.Z = Z;
+            this.GroundUp = GroundUp;
+            this.PrimaryBitMap = PrimaryBitMap;
+            this.AddBitMap = AddBitMap;
+            this.CompressedData = CompressedData;
+        }
     }
 }
