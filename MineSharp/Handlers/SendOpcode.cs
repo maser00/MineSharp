@@ -29,6 +29,7 @@ namespace MineSharp.Handlers
         KeepAlive = 0x00,
         PlayerPosition = 0x0D,
         ChunkData = 0x33,
-        SetCompas = 0x06
+        SetCompas = 0x06,
+        PlayerAbility = 0xCA
     }
 }

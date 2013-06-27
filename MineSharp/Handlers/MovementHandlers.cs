@@ -98,11 +98,5 @@ namespace MineSharp.Handlers
                 client.Send(packet);
             }
         }
-
-        //[PacketHandler(RecvOpcode.PlayerAbility)]
-        //public static async Task HandlePlayerAbility(Client client, PacketReader reader)
-        //{
-        //    await reader.SkipBytes(3);
-        //}
     }
 }

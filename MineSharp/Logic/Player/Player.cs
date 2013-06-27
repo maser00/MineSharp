@@ -30,6 +30,12 @@ namespace MineSharp.Logic
         public View View {get; private set; }
         public double Stance { get; set; }
         public bool OnGround { get; set; }
+        public bool GodMode { get; set; }
+        public bool FlyingAllowed { get; set; }
+        public bool IsFlying { get; set; }
+        public bool CreativeMode { get; set; }
+        public byte FlySpeed { get; set; }
+        public byte WalkSpeed { get; set; }
  
         public Player(string name)
         {

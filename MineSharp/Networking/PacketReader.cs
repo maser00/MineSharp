@@ -70,6 +70,7 @@ namespace MineSharp.Networking
                 }
 
                 int recv = await Task.Factory.FromAsync(
+                    //TODO: catch exception
                          (cb, s) => sock.BeginReceive(buffer, read, buffer.Length - read, SocketFlags.None, cb, s),
                          ias => sock.EndReceive(ias), null);
 
